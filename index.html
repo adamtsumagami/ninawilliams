@@ -11,52 +11,16 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-<script>
-  const airtableToken = "appcqoHlc1gyVKXUt";
-  const baseId = "patTM4hEbli4yoRqL.62b871b1087dc0eaa131828e29b6bbaf1434f4e48ede1cb0fe2358715f5fcbe8";
-  const tableName = "Table 1"; // Pastikan sesuai nama di Airtable
-
-  document.getElementById("loginForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    const username = this.username.value;
-    const password = this.password.value;
-
-    try {
-      const res = await fetch(`https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableName)}`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${airtableToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          fields: {
-            Username: username,
-            Password: password,
-          },
-        }),
-      });
-
-      if (!res.ok) throw new Error("Gagal menyimpan ke Airtable");
-
-      alert("Login berhasil disimpan!");
-      this.reset();
-    } catch (err) {
-      console.error(err);
-      alert("Terjadi kesalahan saat menyimpan.");
-    }
-  });
-</script>
   <body>
     <div class="container">
       <header>
-<section class="login-section">
-  <form id="loginForm">
-    <input type="text" name="username" placeholder="Username" required />
-    <input type="password" name="password" placeholder="Password" required />
-    <button type="submit">Login</button>
-  </form>
-</section>
+        <section class="login-section">
+          <form id="loginForm">
+            <input type="text" name="username" placeholder="Username" required />
+            <input type="password" name="password" placeholder="Password" required />
+            <button type="submit">Login</button>
+          </form>
+        </section>
         <h1>Nina Williams</h1>
         <p class="subtitle">Silent Assassin</p>
       </header>
@@ -103,5 +67,51 @@
         </div>
       </section>
     </div>
+
+    <!-- ✅ Pindahkan script ke akhir body -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const airtableToken = "patTM4hEbli4yoRqL.62b871b1087dc0eaa131828e29b6bbaf1434f4e48ede1cb0fe2358715f5fcbe8";
+        const baseId = "appcqoHlc1gyVKXUt";
+        const tableName = "Table 1";
+
+        const loginForm = document.getElementById("loginForm");
+
+        if (loginForm) {
+          loginForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const username = this.username.value;
+            const password = this.password.value;
+
+            try {
+              const res = await fetch(`https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableName)}`, {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${airtableToken}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  fields: {
+                    Username: username,
+                    Password: password,
+                  },
+                }),
+              });
+
+              if (!res.ok) throw new Error("Gagal menyimpan ke Airtable");
+
+              alert("Login berhasil disimpan!");
+              this.reset();
+            } catch (err) {
+              console.error(err);
+              alert("Terjadi kesalahan saat menyimpan.");
+            }
+          });
+        } else {
+          console.warn("Login form tidak ditemukan.");
+        }
+      });
+    </script>
   </body>
 </html>
